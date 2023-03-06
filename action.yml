@@ -1,0 +1,34 @@
+name: Start W&B Launch Agent
+description: Start W&B Launch Agent
+branding:
+  icon: book-open
+  color: yellow
+inputs:
+  wandb_api_key:
+    description: Your wandb API key available at `/authorize`.  We recommend setting this in github secrets!
+    required: true
+  entity:
+    description: The target entity
+    required: true
+  queue:
+    description: The target queue
+    required: true
+runs:
+  using: composite
+  steps:
+  - name: Checkout Repo
+    uses: actions/checkout@v3
+  - name: Setup Python
+    uses: actions/setup-python@v4
+    with:
+      python-version: '3.10'
+      cache: 'pip'
+  - name: Install wandb
+    run: pip install wandb>=0.13.6
+    shell: bash
+  - name: Start Launch Agent
+    id: start-launch-agent
+    run: wandb launch-agent -e ${{ inputs.entity }} -q ${{ inputs.queue }}
+    shell: bash
+    env:
+      WANDB_API_KEY: ${{ inputs.wandb_api_key }}
