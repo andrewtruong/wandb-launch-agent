@@ -24,7 +24,7 @@ runs:
       python-version: '3.10'
 #       cache: 'pip'
   - name: Install wandb
-    run: pip install wandb>=0.13.6
+    run: python -m pip install wandb>=0.13.6
     shell: bash
   - name: Start Launch Agent
     id: start-launch-agent
